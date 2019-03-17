@@ -16,10 +16,8 @@ let message = {
  export async function fetchMessages(){
   let url = baseUrl + "/posts"
   const response =  await fetch(url)
-  console.log("1. response ", response);
   if(response.status === 200){
      const messages = await response.json()
-     console.log("2. Response in JSON", messages)
      return messages
   } else {
     //TODO: when something else is returned from the server

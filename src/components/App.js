@@ -3,45 +3,28 @@ import MessagesView from './MessagesView';
 import InputView from './InputView';
 import { fetchMessages } from './ApiManager';
 import "./App.scss"
+import {store} from "./StoreManager";
+import { setMessages, addNewMessage } from './actions/index';
 
  class App extends Component {
   
   componentWillMount() {
-//       //React component CODE
-
-// //these could then be in the client side
-// async function handleSendNewMessage(){
-//     try {
-//       let sentMessage = await postMessage(message)
-//       console.log("managed to sent message: " , sentMessage)
-//       //TODO: notify redux and use the fake persist to store the received message
-//      } catch( err ) {
-//       console.error( err );
-//     }
-//   }
-//   //on button click send message
-//   //handleSendNewMessage()
-  
-  
-  //i.e when compoennt mounted get chat history
-
-
       this.getChatHistory()
-
   }
 
   async getChatHistory(){
-    console.log("0. everthing starts here")
    try {
+     //first get the message history from server
     let messages = await fetchMessages();
-    console.log("3. messages " , messages)
-    //TODO: tell redux that we received messages from the server
-   } catch( err ) {
+    //then update redux store with the content
+    store.dispatch(setMessages(messages))
+  } catch( err ) {
     console.error( err );
   }
 }
   
     render() {
+      console.log("App render")
     return (
       <div className="app-container">
         <MessagesView/>
