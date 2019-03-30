@@ -15,7 +15,7 @@ class MessagesView extends Component {
     this.onStoreChange = this.onStoreChange.bind(this);
     this.scrollToBottom = this.scrollToBottom.bind(this);
 
-    //subscribing to the store and listening to changes in the redux state
+    //method to unsubscribe the change listener
     this.unSubscribe = store.subscribe(this.onStoreChange);
   }
 
@@ -41,16 +41,18 @@ class MessagesView extends Component {
   }
 
   componentWillUnmount() {
-    //
     this.unSubscribe();
   }
 
   render() {
+    //Title for the header
     let title = "Chat App";
     console.log("MessagesView render!", this.state.messages);
 
+    //checking the message id and mapping them to either user div or guest div
     let messageList = this.state.messages.map((eachMessage, index) => {
       if (eachMessage.userId === USER_ID) {
+        //if the id equals to user_id we are returning a user message div
         return (
           <div key={index} className="message-item-user">
            <p className="message-item-body"> User: {eachMessage.userId}</p> 
@@ -60,6 +62,7 @@ class MessagesView extends Component {
           </div>
         );
       } else {
+        //all the other messages return a guest message div
         return (
           <div key={index} className="message-item-guest">
             <p className="message-item-body"> User: {eachMessage.userId}</p>
@@ -70,14 +73,14 @@ class MessagesView extends Component {
         );
       }
     });
-
+    //returning the message component
     return (
       <div className="message-container">
         <div className="header-container">
           <h2 className="header-title">{title}</h2>
         </div>
 
-        {/* {JSON.stringify(this.state.messages)} */}
+        
         <div className="message-list" id="scroll" >
           {messageList}
     
