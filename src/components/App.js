@@ -22,9 +22,9 @@ import { setMessages, addNewMessage } from './actions/index';
     console.error( err );
   }
 }
-  
+  //rendering the two components
     render() {
-      console.log("App render")
+      
     return (
       <div className="app-container">
         <MessagesView/>

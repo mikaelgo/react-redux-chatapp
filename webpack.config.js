@@ -1,4 +1,10 @@
 const webpack = require('webpack');
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+
+const HOST = process.env.HOST || 'localhost';
+const PORT = process.env.PORT || 8080;
+const PROXY = `http://${HOST}:${PORT}`;
+
 module.exports = {
     entry: './src/index.js',
     module: {
@@ -32,6 +38,17 @@ module.exports = {
       filename: 'bundle.js'
     },
     plugins: [
+      new BrowserSyncPlugin(
+        {
+          host: HOST,
+          port: PORT,
+          proxy: PROXY
+        },
+        
+        {
+          reload: false
+        }
+      ),
         new webpack.HotModuleReplacementPlugin()
       ],
     devServer: {
