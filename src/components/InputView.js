@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./scss/InputView.scss"
 import { store } from "./StoreManager";
 import { addNewMessage } from "./actions";
 import {USER_ID} from "../constants"
@@ -27,10 +28,14 @@ class InputView extends Component {
   //adding the new message to the store 
   handleSendMessage(event) {
     event.preventDefault()
-    store.dispatch(addNewMessage(this.state.inputValue, USER_ID));
-    this.setState({
-      "inputValue": " "
-    });
+    if(this.state.inputValue.trim().length === 0){
+      console.log("cannot send empty messages")
+    } else {
+      store.dispatch(addNewMessage(this.state.inputValue, USER_ID));
+      this.setState({
+        "inputValue": ""
+      });
+    }
   }
 
   //rendering the component
