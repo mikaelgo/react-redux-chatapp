@@ -1,21 +1,23 @@
 import React, { Component } from "react";
+import "./scss/MessagesView.scss"
 import { store } from "./StoreManager";
 import { USER_ID } from "../constants";
 
 class MessagesView extends Component {
   constructor(props) {
     super(props);
-
     //component state
     this.state = {
-      messages: []
-    };
+      messages: store.getState().messages
+    }; 
 
     //binding the methods
     this.onStoreChange = this.onStoreChange.bind(this);
     this.scrollToBottom = this.scrollToBottom.bind(this);
 
-    //method to unsubscribe the change listener
+    //subscribe to redux changes.
+    //If something changes this.onStoreChange will be called.
+    //when component un mounts unSubscribe to the changes
     this.unSubscribe = store.subscribe(this.onStoreChange);
   }
 
@@ -84,7 +86,7 @@ class MessagesView extends Component {
         <div className="message-list" id="scroll" >
           {messageList}
     
-          <div style={{ float:"left", clear: "both" }}
+          <div
              ref={(el) => { this.messagesEnd = el; }}>
         </div>
         </div>
