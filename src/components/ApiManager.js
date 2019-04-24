@@ -3,14 +3,6 @@
 
 //variables
 const baseUrl = "https://jsonplaceholder.typicode.com";
-const userId = 1;
-let messageId = 123456789;
-let message = {
-  userId: userId,
-  id: messageId,
-  title: "This is title",
-  body: "This is message"
-};
 
 //get chatmessages
 export async function fetchMessages() {
@@ -26,6 +18,14 @@ export async function fetchMessages() {
   }
 }
 //post new chat message
+/* message body template
+{
+  userId: 2,
+  id: 123456789,
+  title: "This is title",
+  body: "This is message"
+}
+*/
 export async function postMessage(message) {
   let url = baseUrl + "/posts";
   let requestOptions = {
