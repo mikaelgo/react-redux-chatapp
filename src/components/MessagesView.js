@@ -8,7 +8,8 @@ class MessagesView extends Component {
     super(props);
     //component state
     this.state = {
-      messages: store.getState().messages
+      messages: store.getState().messages,
+      users: store.getState().users,
     }; 
 
     //binding the methods
@@ -24,7 +25,8 @@ class MessagesView extends Component {
   //getting the messages from the store state tree
   onStoreChange() {
     this.setState({
-      messages: store.getState().messages
+      messages: store.getState().messages,
+      users: store.getState().users
     });
   }
   //Method to scroll to the dummy div that has been created to the bottom of message-container
@@ -46,18 +48,35 @@ class MessagesView extends Component {
     this.unSubscribe();
   }
 
+  getUserName(id) {
+    //if the user list has been fetched
+    //go through the list to find the correct name for each user
+    //if no name was found fallback to use the id
+    if(this.state.users.length){
+      for (let i = 0; i < this.state.users.length; i++) {
+        const user = this.state.users[i];
+        if(user.id === id){
+          return user.username
+        }
+      }
+      return id
+    } else {
+      return id
+    }
+  }
+
   render() {
     //Title for the header
     let title = "Chat App";
-    console.log("MessagesView render!", this.state.messages);
+    console.log("MessagesView render!", this.state.messages, store.getState());
 
     //checking the message id and mapping them to either user div or guest div
     let messageList = this.state.messages.map((eachMessage, index) => {
       if (eachMessage.userId === USER_ID) {
-        //if the id equals to user_id we are returning a user message div
+        //if the id equals to user_id we are returning a user message div        
         return (
           <div key={index} className="message-item-user">
-           <p className="message-item-body"> User: {eachMessage.userId}</p> 
+           <p className="message-item-body">{this.getUserName(eachMessage.userId)}</p> 
            <br/>
            <br/>
             <p className="message-item-body">{eachMessage.body}</p>
@@ -67,7 +86,7 @@ class MessagesView extends Component {
         //all the other messages return a guest message div
         return (
           <div key={index} className="message-item-guest">
-            <p className="message-item-body"> User: {eachMessage.userId}</p>
+            <p className="message-item-body">{this.getUserName(eachMessage.userId)}</p>
             <br/>
             <br/>
             <p className="message-item-body">{eachMessage.body}</p>

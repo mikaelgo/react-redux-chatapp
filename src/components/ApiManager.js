@@ -17,6 +17,22 @@ export async function fetchMessages() {
     };
   }
 }
+
+
+//get chat group users
+export async function fetchUsers() {
+  let url = baseUrl + "/users";
+  const response = await fetch(url);
+  if (response.status === 200) {
+    const users = await response.json();
+    return users;
+  } else {
+    return {
+      error: "Something went wrong"
+    };
+  }
+}
+
 //post new chat message
 /* message body template
 {

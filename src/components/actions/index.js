@@ -18,3 +18,9 @@ export const addNewMessage = (body, userId) => ({
     body,
     userId
 });
+
+//creating the action types 
+export const setUsers = (users) => ({
+  type: 'SET_USERS',
+  users
+});
