@@ -32,6 +32,7 @@ class App extends Component {
       //first get the message history from server
       let users = await fetchUsers();
       if (users.hasOwnProperty("error")) {
+        //TODO: notify user that could not get user list
       } else {
         //then update redux store with the content
         store.dispatch(setUsers(users));

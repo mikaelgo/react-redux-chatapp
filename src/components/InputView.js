@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./scss/InputView.scss"
 import { store } from "./StoreManager";
 import { addNewMessage } from "./actions";
+import {postMessage, getRandomIDString} from "./ApiManager"
 import {USER_ID} from "../constants"
 
 class InputView extends Component {
@@ -12,7 +13,8 @@ class InputView extends Component {
     this.state = {
       "inputValue": ""
     };
-
+    console.log("getRandomIDString" , getRandomIDString())
+    
     //binding the methods
     this.handleSendMessage = this.handleSendMessage.bind(this);
     this.handleInput = this.handleInput.bind(this);
@@ -26,15 +28,28 @@ class InputView extends Component {
   }
 
   //adding the new message to the store 
-  handleSendMessage(event) {
+  async handleSendMessage(event) {
     event.preventDefault()
     if(this.state.inputValue.trim().length === 0){
       console.log("cannot send empty messages")
     } else {
-      store.dispatch(addNewMessage(this.state.inputValue, USER_ID));
-      this.setState({
-        "inputValue": ""
-      });
+      let message = {
+        "userId": USER_ID,
+        "id": getRandomIDString(),
+        "title": "",
+        "body": this.state.inputValue
+      }
+      let postedMessage = await postMessage(message)
+      
+      if(postedMessage.hasOwnProperty("error")){
+        //TODO: notify user that the message could not be sent
+      } else {
+        store.dispatch(addNewMessage(postedMessage.body, USER_ID));
+        this.setState({
+          "inputValue": ""
+        });
+      }
+      
     }
   }
 
