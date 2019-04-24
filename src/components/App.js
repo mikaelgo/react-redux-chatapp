@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import MessagesView from './MessagesView';
 import InputView from './InputView';
 import { fetchMessages } from './ApiManager';
-import "./App.scss"
+import "./scss/App.scss"
 import {store} from "./StoreManager";
-import { setMessages, addNewMessage } from './actions/index';
+import { setMessages } from './actions/index';
 
  class App extends Component {
   
@@ -16,8 +16,13 @@ import { setMessages, addNewMessage } from './actions/index';
    try {
      //first get the message history from server
     let messages = await fetchMessages();
-    //then update redux store with the content
-    store.dispatch(setMessages(messages))
+    if(messages.hasOwnProperty("error")){
+      //TODO: notify user that messages could not be loaded
+      
+    } else {
+      //then update redux store with the content
+      store.dispatch(setMessages(messages))
+    }
   } catch( err ) {
     console.error( err );
   }
